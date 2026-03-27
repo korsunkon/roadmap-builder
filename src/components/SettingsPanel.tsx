@@ -35,7 +35,7 @@ export const SettingsPanel: React.FC<Props> = ({ show, data, setData, resetAll }
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = "roadmap.json";
+    a.download = (data.title || "roadmap") + ".json";
     a.click();
     URL.revokeObjectURL(url);
   }
@@ -106,7 +106,7 @@ export const SettingsPanel: React.FC<Props> = ({ show, data, setData, resetAll }
 
       <div style={{ width: 1, height: 20, background: "#E5E5E0" }} />
 
-      <button style={btnDangerStyle} onClick={resetAll}>&#8634; Сбросить всё</button>
+      <button style={btnDangerStyle} onClick={resetAll}>&#8634; Сбросить роадмап</button>
     </div>
   );
 };

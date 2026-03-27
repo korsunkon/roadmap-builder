@@ -8,7 +8,10 @@ export const HEADER_H = 52;
 export const SNAP_VAL = 0.25;
 export const PERIOD_DAYS = 14;
 export const DAY_MS = 86400000;
-export const STORAGE_KEY = "roadmap-builder-data";
+export const STORAGE_KEY = "roadmap-builder-data"; // legacy, used for migration
+export const REGISTRY_KEY = "roadmap-registry";
+export const ACTIVE_KEY = "roadmap-active";
+export const ROADMAP_KEY_PREFIX = "roadmap-data-";
 
 export const PALETTE: PaletteEntry[] = [
   { color: "#C9B88C", name: "Золото" },
@@ -53,3 +56,35 @@ export function makeDefault(): RoadmapData {
     blocks: makeBlocks(),
   };
 }
+
+function makeAiYuristBlocks(): Block[] {
+  return [
+    { id: "ay1", label: "1. Исследование рынка юр. AI", bars: [{ id: "ay_r1", start: 0, end: 1, color: "#C9B88C" }], milestones: [] },
+    { id: "ay2", label: "2. Анализ законодательной базы", bars: [{ id: "ay_r2", start: 0, end: 1.25, color: "#C9B88C" }], milestones: [] },
+    { id: "ay3", label: "3. Формирование требований", bars: [{ id: "ay_r3", start: 0.75, end: 1.75, color: "#C9B88C" }], milestones: [{ id: "ay_m3", pos: 1.75, label: "Требования" }] },
+    { id: "ay4", label: "4. Сбор и разметка датасета", bars: [{ id: "ay_r4", start: 1, end: 2.5, color: "#6B8DB5" }], milestones: [] },
+    { id: "ay5", label: "5. PoC — генерация документов", bars: [{ id: "ay_r5", start: 1.5, end: 3, color: "#D6CEBA" }], milestones: [] },
+    { id: "ay6", label: "6. Архитектура и PRD", bars: [{ id: "ay_r6", start: 2, end: 3, color: "#6B8DB5" }], milestones: [{ id: "ay_m6", pos: 3, label: "PRD готов" }] },
+    { id: "ay7", label: "7. Разработка MVP", bars: [{ id: "ay_r7", start: 3, end: 5, color: "#3A3A3A" }], milestones: [{ id: "ay_m7", pos: 5, label: "MVP" }] },
+    { id: "ay8", label: "8. Модуль анализа договоров", bars: [{ id: "ay_r8", start: 3.5, end: 5.25, color: "#3A3A3A" }], milestones: [] },
+    { id: "ay9", label: "9. Модуль судебной практики", bars: [{ id: "ay_r9", start: 4, end: 5.75, color: "#3A3A3A" }], milestones: [] },
+    { id: "ay10", label: "10. Пилот с юр. фирмами", bars: [{ id: "ay_r10", start: 5, end: 6.5, color: "#5B8C5A" }], milestones: [] },
+    { id: "ay11", label: "11. Маркетинг и продажи", bars: [{ id: "ay_r11", start: 5.5, end: 7, color: "#E85D3A" }], milestones: [] },
+    { id: "ay12", label: "12. Обратная связь и доработки", bars: [{ id: "ay_r12", start: 6, end: 7, color: "#B07BAC" }], milestones: [] },
+  ];
+}
+
+export function makeDefaultAiYurist(): RoadmapData {
+  return {
+    title: "Дорожная карта AI Юрист",
+    subtitle: "Цель — пилотные внедрения",
+    startDate: "2026-03-02",
+    periodsCount: 7,
+    blocks: makeAiYuristBlocks(),
+  };
+}
+
+export const DEFAULT_ROADMAPS: { id: string; name: string; factory: () => RoadmapData }[] = [
+  { id: "talk-to-data", name: "Talk to your Data", factory: makeDefault },
+  { id: "ai-yurist", name: "AI Юрист", factory: makeDefaultAiYurist },
+];

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import type { Selection } from "./types";
 import { useRoadmapData } from "./hooks/useRoadmapData";
 import { useKeyboard } from "./hooks/useKeyboard";
@@ -24,6 +24,28 @@ export default function App() {
     rd.deleteBar, rd.deleteMilestone, setMilestoneMode, setShowSettings
   );
 
+  // Reset UI state when switching roadmaps
+  const handleSwitch = useCallback((id: string) => {
+    setSel(null);
+    setEditingLabel(null);
+    setEditingTitle(false);
+    setEditingSub(false);
+    setMilestoneMode(false);
+    rd.switchRoadmap(id);
+  }, [rd.switchRoadmap]);
+
+  const handleCreate = useCallback((name: string) => {
+    setSel(null);
+    setEditingLabel(null);
+    rd.createRoadmap(name);
+  }, [rd.createRoadmap]);
+
+  const handleDelete = useCallback((id: string) => {
+    setSel(null);
+    setEditingLabel(null);
+    rd.deleteRoadmap(id);
+  }, [rd.deleteRoadmap]);
+
   let selectedBar = null;
   let selectedMs = null;
   if (sel?.barId) {
@@ -46,7 +68,11 @@ export default function App() {
   return (
     <div style={{ width: "100%", height: "100vh", background: "#FAFAF8", fontFamily: "'Inter',-apple-system,BlinkMacSystemFont,sans-serif", display: "flex", flexDirection: "column", overflow: "hidden", color: "#333", fontSize: 13 }}>
       <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-      <TopBar showSettings={showSettings} setShowSettings={setShowSettings} />
+      <TopBar
+        showSettings={showSettings} setShowSettings={setShowSettings}
+        registry={rd.registry} activeId={rd.activeId}
+        onSwitch={handleSwitch} onCreate={handleCreate} onDelete={handleDelete}
+      />
       <TitleRow data={rd.data} setData={rd.setData} editingTitle={editingTitle} setEditingTitle={setEditingTitle} editingSub={editingSub} setEditingSub={setEditingSub} />
       <Toolbar
         milestoneMode={milestoneMode} setMilestoneMode={setMilestoneMode}

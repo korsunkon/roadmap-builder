@@ -45,3 +45,8 @@ export interface PaletteEntry {
   color: string;
   name: string;
 }
+
+export interface RoadmapRegistryEntry {
+  id: string;
+  name: string;
+}
